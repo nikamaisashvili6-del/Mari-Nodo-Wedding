@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>მარიამ &amp; ნოდო — Wedding Invitation</title>
+<meta property="og:title" content="მარიამ &amp; ნოდო — Wedding Invitation">
+<meta property="og:description" content="სიყვარულით გიწვევთ ჩვენი ბედნიერი დღის აღსანიშნად · 19 სექტემბერი 2026 · LISI EVENT HALL">
+<meta property="og:image" content="assets/couple.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Beau+Rivage&family=Cinzel:wght@400;500;600&family=Noto+Serif+Georgian:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f9f0e0;
+    --cream-2:#f6efdf;
+    --paper:#fdf7ec;
+    --gold:#a67d2b;
+    --gold-2:#b48c3d;
+    --brown:#6c513f;
+    --brown-soft:#846f61;
+    --burgundy:#5a0f1b;
+    --script:'Beau Rivage',cursive;
+    --serif:'Cinzel',Georgia,serif;
+    --geo:'Noto Serif Georgian',Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;overflow-x:hidden}
+  body{
+    background:var(--cream);
+    color:var(--brown);
+    font-family:var(--geo);
+    overflow-x:hidden;
+  }
+  body.locked{overflow:hidden;height:100vh}
+  img{max-width:100%}
+
+  /* ---------- ENVELOPE INTRO (photo + video, as original) ---------- */
+  #envelope-screen{
+    position:fixed;inset:0;z-index:99;
+    background:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+    transition:opacity 1.4s ease;
+  }
+  #video-wrap{
+    position:fixed;inset:0;z-index:100;
+    background:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    opacity:0;pointer-events:none;
+    transition:opacity .8s ease;
+  }
+  #video-wrap.video-in{opacity:1;pointer-events:auto}
+  #video-wrap.video-out{opacity:0;transition:opacity 1.4s ease}
+  .env-stage{
+    position:relative;
+    flex:none;
+    height:100vh;height:100dvh;   /* fill the phone screen top to bottom */
+    aspect-ratio:941/1672;        /* sides crop evenly on narrow screens */
+  }
+  #env-img,#env-video{width:100%;height:100%;object-fit:cover;display:block}
+  /* M & N wax seal image over the baked-in monogram (seal center 49.5% / 50.1%, 31% wide) */
+  .wax-seal{
+    position:absolute;left:49.55%;top:50.1%;
+    width:31.5%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    transition:opacity .45s ease;
+  }
+  .wax-seal img{
+    width:100%;display:block;
+    filter:drop-shadow(0 5px 12px rgba(67,10,20,.35));
+  }
+  .wax-seal.hide{opacity:0}
+  .wax-seal.glow img{animation:sealGlow 1.6s ease-in-out infinite}
+  @keyframes sealGlow{
+    0%,100%{filter:drop-shadow(0 5px 12px rgba(67,10,20,.35)) drop-shadow(0 0 13px rgba(255,196,110,.3))}
+    50%{filter:drop-shadow(0 5px 12px rgba(67,10,20,.35)) drop-shadow(0 0 26px rgba(255,196,110,.65))}
+  }
+  #tap-wrap{
+    position:absolute;left:50%;top:62.5%;
+    transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    animation:tapIn 1.2s .8s both;
+  }
+  @keyframes tapIn{
+    from{opacity:0;transform:translateX(-50%) translateY(6px)}
+    to{opacity:1;transform:translateX(-50%) translateY(0)}
+  }
+  #tap-label{
+    font-family:var(--serif);
+    font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+    color:rgba(140,100,60,.75);
+    white-space:nowrap;
+    animation:tapPulse 2.4s 1.6s ease-in-out infinite;
+  }
+  @keyframes tapPulse{
+    0%,100%{opacity:.45;letter-spacing:.26em}
+    50%{opacity:1;letter-spacing:.30em}
+  }
+  .chevron{
+    width:10px;height:10px;
+    border-right:1.5px solid rgba(140,100,60,.6);
+    border-top:1.5px solid rgba(140,100,60,.6);
+    transform:rotate(-45deg);
+    animation:chevFloat 2.4s 1.9s ease-in-out infinite;
+  }
+  @keyframes chevFloat{
+    0%,100%{transform:rotate(-45deg) translate(0,0);opacity:.6}
+    50%{transform:rotate(-45deg) translate(2px,-2px);opacity:1}
+  }
+
+  /* ---------- SHARED ---------- */
+  main{opacity:0;transition:opacity 1.2s ease .7s}
+  main.shown{opacity:1}
+  section{
+    position:relative;
+    max-width:680px;
+    margin:0 auto;
+    padding:4.2rem 1.4rem;
+    text-align:center;
+  }
+  .script-title{
+    font-family:var(--script);
+    color:var(--gold);
+    font-size:clamp(2.6rem,8vw,3.4rem);
+    line-height:1.15;
+    margin-bottom:.4rem;
+  }
+  .divider{width:150px;margin:.6rem auto 1.6rem;display:block}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.visible{opacity:1;transform:none}
+  .petal{position:absolute;width:44px;pointer-events:none;opacity:.85;animation:petalFloat 5.5s ease-in-out infinite}
+  @keyframes petalFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-13px) rotate(8deg)}}
+
+  /* ---------- HERO ---------- */
+  .hero{padding-top:5.4rem}
+  .hero .flourish{width:130px;opacity:.9}
+  .hero h1{
+    font-family:var(--geo);
+    font-weight:600;
+    font-size:clamp(2.5rem,9vw,3.6rem);
+    color:var(--brown);
+    letter-spacing:.02em;
+    margin:.7rem 0 .4rem;
+  }
+  .hero .sub{
+    color:var(--brown-soft);
+    font-size:1.05rem;
+    line-height:1.75;
+    max-width:24em;
+    margin:0 auto 1.9rem;
+  }
+  .hero .date{
+    font-family:var(--serif);
+    font-size:clamp(1.35rem,5vw,1.7rem);
+    color:var(--gold);
+    letter-spacing:.14em;
+    margin-bottom:.7rem;
+  }
+  .hero .venue{
+    font-size:1.08rem;color:var(--brown);
+    letter-spacing:.16em;
+    font-family:var(--serif);
+  }
+
+  /* ---------- COUNTDOWN ---------- */
+  .countdown-wrap{padding-top:1.2rem}
+  #countdown{
+    display:flex;justify-content:center;gap:clamp(.7rem,3vw,1.6rem);
+    margin-top:1.4rem;
+  }
+  .cd-box{
+    background:var(--paper);
+    border:1px solid #e3d3ae;
+    border-radius:14px;
+    width:clamp(72px,19vw,96px);
+    padding:1rem .3rem .85rem;
+    box-shadow:0 8px 20px rgba(108,81,63,.10);
+  }
+  .cd-num{
+    font-family:var(--serif);
+    font-size:clamp(1.6rem,6vw,2.2rem);
+    color:var(--gold);
+    line-height:1;
+  }
+  .cd-label{font-size:.78rem;color:var(--brown-soft);margin-top:.5rem;letter-spacing:.05em}
+
+  /* ---------- PROGRAM ---------- */
+  .program-paper{
+    background-image:url("assets/torn-paper.png");
+    background-size:100% 100%;
+    padding:4.6rem 1.6rem 5rem;
+    filter:drop-shadow(0 14px 26px rgba(108,81,63,.13));
+  }
+  .event{
+    display:flex;align-items:center;justify-content:center;
+    gap:.9rem;
+    padding:.78rem 0;
+    flex-wrap:wrap;
+  }
+  .ev-emoji{font-size:1.45rem}
+  .ev-time{
+    font-family:var(--serif);
+    font-size:1.25rem;color:var(--gold);
+    letter-spacing:.08em;min-width:3.6em;text-align:center;
+  }
+  .ev-name{font-size:1.06rem;color:var(--brown)}
+  .ev-note{width:100%;font-size:.9rem;color:var(--brown-soft);margin-top:-.2rem}
+
+  /* ---------- DRESSCODE ---------- */
+  .dress-word{
+    font-family:var(--geo);font-weight:600;
+    font-size:clamp(1.7rem,6vw,2.2rem);
+    color:var(--brown);letter-spacing:.06em;
+    margin-bottom:1.2rem;
+  }
+  .dress-note{
+    color:var(--brown-soft);line-height:1.9;font-size:.99rem;
+    max-width:30em;margin:0 auto;
+  }
+
+  /* ---------- LOCATION ---------- */
+  .loc-name{
+    font-family:var(--serif);
+    font-size:clamp(1.4rem,5.5vw,1.8rem);
+    color:var(--brown);letter-spacing:.14em;
+    margin-bottom:1.6rem;
+  }
+  .venue-art{
+    width:100%;max-width:560px;
+    mix-blend-mode:multiply;
+    margin-bottom:2.2rem;
+  }
+  .map-card{
+    border:1px solid #e0cfa8;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 14px 30px rgba(108,81,63,.16);
+    background:var(--paper);
+  }
+  .map-card iframe{display:block;width:100%;height:380px;border:0}
+  .map-link{
+    display:inline-block;margin-top:1.3rem;
+    font-family:var(--geo);font-size:.95rem;
+    color:var(--paper);background:var(--gold-2);
+    padding:.68rem 1.7rem;border-radius:999px;
+    text-decoration:none;letter-spacing:.04em;
+    box-shadow:0 8px 18px rgba(166,125,43,.32);
+    transition:transform .25s ease;
+  }
+  .map-link:hover{transform:translateY(-2px)}
+
+  /* ---------- RSVP ---------- */
+  .rsvp-stamp{
+    background:none;border:none;cursor:pointer;padding:0;
+    transition:transform .3s ease;
+  }
+  .rsvp-stamp:hover{transform:scale(1.07) rotate(-2deg)}
+  .rsvp-stamp img{
+    width:152px;display:block;
+    filter:drop-shadow(0 10px 18px rgba(67,10,20,.3));
+    animation:stampPulse 2.6s ease-in-out infinite;
+  }
+  @keyframes stampPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+  .rsvp-sub{color:var(--brown-soft);font-size:.98rem;margin-top:1.3rem;line-height:1.8}
+  form{text-align:left}
+
+  /* ---------- RSVP MODAL ---------- */
+  .modal{
+    position:fixed;inset:0;z-index:80;
+    display:flex;align-items:center;justify-content:center;
+    padding:1.1rem;
+    opacity:0;pointer-events:none;
+    transition:opacity .35s ease;
+  }
+  .modal.show{opacity:1;pointer-events:auto}
+  .modal-backdrop{
+    position:absolute;inset:0;
+    background:rgba(56,36,26,.5);
+    backdrop-filter:blur(3px);
+  }
+  .modal-card{
+    position:relative;z-index:1;
+    width:100%;max-width:430px;
+    max-height:88vh;overflow-y:auto;
+    background:var(--paper);
+    border:1px solid #e6d6b2;border-radius:22px;
+    padding:2.4rem 1.6rem 1.8rem;
+    box-shadow:0 30px 70px rgba(40,20,10,.35);
+    transform:translateY(26px) scale(.97);
+    transition:transform .35s ease;
+  }
+  .modal.show .modal-card{transform:none}
+  .modal-title{
+    font-family:var(--serif);font-size:1.5rem;color:var(--gold);
+    text-align:center;letter-spacing:.24em;margin-bottom:.3rem;
+  }
+  .modal-sub{text-align:center;color:var(--brown-soft);font-size:.92rem;margin-bottom:1.6rem;line-height:1.7}
+  .modal-close{
+    position:absolute;top:.7rem;right:.85rem;
+    background:none;border:none;cursor:pointer;
+    font-size:1.7rem;line-height:1;color:var(--brown-soft);
+    padding:.3rem;
+  }
+  .modal-close:hover{color:var(--burgundy)}
+  .field{margin-bottom:1.35rem}
+  .field label{
+    display:block;font-size:.92rem;font-weight:600;
+    color:var(--brown);margin-bottom:.55rem;
+  }
+  .field input[type=text],
+  .field input[type=number],
+  .field select{
+    width:100%;
+    font-family:var(--geo);font-size:1rem;color:var(--brown);
+    background:var(--cream-2);
+    border:1px solid #e0d0ab;border-radius:11px;
+    padding:.78rem .95rem;
+    outline:none;
+    transition:border-color .25s ease, box-shadow .25s ease;
+    appearance:none;
+  }
+  .field input:focus,.field select:focus{
+    border-color:var(--gold-2);
+    box-shadow:0 0 0 3px rgba(180,140,61,.16);
+  }
+  .attend-opts{display:flex;gap:.7rem;flex-wrap:wrap}
+  .attend-opts input{position:absolute;opacity:0;pointer-events:none}
+  .attend-opts label{
+    display:inline-block;margin:0;cursor:pointer;
+    font-size:.95rem;font-weight:500;color:var(--brown);
+    background:var(--cream-2);
+    border:1.5px solid #e0d0ab;border-radius:999px;
+    padding:.62rem 1.35rem;
+    transition:all .25s ease;
+  }
+  .attend-opts input:checked + label{
+    background:var(--burgundy);border-color:var(--burgundy);color:#f3e2c8;
+  }
+  .btn-submit{
+    display:block;width:100%;
+    font-family:var(--geo);font-size:1.05rem;font-weight:600;
+    color:#f3e2c8;background:var(--burgundy);
+    border:none;border-radius:999px;
+    padding:.95rem;margin-top:.4rem;
+    cursor:pointer;letter-spacing:.05em;
+    box-shadow:0 10px 22px rgba(90,15,27,.32);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-submit:hover{transform:translateY(-2px);box-shadow:0 14px 26px rgba(90,15,27,.4)}
+  .btn-submit:disabled{opacity:.6;cursor:wait;transform:none}
+  #rsvp-done{
+    display:none;
+    text-align:center;
+    padding:1.6rem 0 .8rem;
+  }
+  #rsvp-done .big{font-size:1.25rem;font-weight:600;color:var(--brown);margin-bottom:.5rem}
+  #rsvp-done p{color:var(--brown-soft)}
+
+  /* ---------- THANKS ---------- */
+  .thanks{padding-bottom:6.5rem}
+  .photo-frame{
+    position:relative;
+    max-width:430px;margin:0 auto 2.4rem;
+  }
+  .photo-frame .photo{
+    width:100%;border-radius:14px;
+    box-shadow:0 20px 40px rgba(108,81,63,.24);
+  }
+  .photo-frame .peony{position:absolute;width:34%;pointer-events:none}
+  .peony.p1{left:-9%;bottom:-7%;transform:rotate(-8deg)}
+  .peony.p2{right:-9%;bottom:-9%;transform:rotate(14deg) scaleX(-1)}
+  .peony.p3{right:-6%;top:-7%;width:24%;transform:rotate(120deg)}
+  .thanks-big{
+    font-family:var(--geo);font-weight:700;
+    font-size:clamp(1.9rem,7vw,2.5rem);
+    color:var(--gold);margin-bottom:.9rem;
+  }
+  .thanks-sub{color:var(--brown-soft);font-size:1.06rem;line-height:1.8;margin-bottom:1.6rem}
+  .thanks-names{
+    font-family:var(--geo);font-weight:600;
+    font-size:1.35rem;color:var(--brown);letter-spacing:.04em;
+  }
+
+  /* ---------- MUSIC BUTTON ---------- */
+  #music-btn{
+    position:fixed;right:1.2rem;bottom:1.2rem;z-index:60;
+    width:58px;height:58px;border-radius:50%;
+    background:var(--burgundy);border:none;cursor:pointer;
+    display:none;align-items:center;justify-content:center;
+    box-shadow:0 10px 24px rgba(90,15,27,.42);
+    transition:transform .3s ease;
+  }
+  #music-btn.on{display:flex}
+  #music-btn:hover{transform:scale(1.08)}
+  #music-btn svg{width:22px;height:22px;fill:#f3e2c8}
+  #music-btn.playing{animation:pulse 2.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 10px 24px rgba(90,15,27,.42)}50%{box-shadow:0 10px 24px rgba(90,15,27,.42),0 0 0 12px rgba(90,15,27,.08)}}
+
+  @media (max-width:480px){
+    .map-card iframe{height:300px}
+    .peony.p3{display:none}
+  }
+</style>
+</head>
+<body class="locked">
+
+<!-- ================= ENVELOPE ================= -->
+<div id="envelope-screen" role="button" aria-label="მოსაწვევის გახსნა" tabindex="0">
+  <div class="env-stage">
+    <img id="env-img" src="assets/envelope.png" alt="Wedding invitation envelope" draggable="false">
+    <div class="wax-seal"><img src="assets/seal.png" alt="M&amp;N" draggable="false"></div>
+    <div id="tap-wrap">
+      <div class="chevron"></div>
+      <div id="tap-label">Tap to open</div>
+    </div>
+  </div>
+</div>
+<div id="video-wrap">
+  <div class="env-stage">
+    <video id="env-video" src="assets/envelope-open.mp4" muted playsinline preload="auto"></video>
+    <div class="wax-seal" id="video-seal"><img src="assets/seal.png" alt="M&amp;N" draggable="false"></div>
+  </div>
+</div>
+
+<main id="invitation">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <img class="petal" src="assets/petal.png" alt="" style="left:6%;top:22%">
+    <img class="petal" src="assets/petal2.png" alt="" style="right:7%;top:52%;animation-delay:1.2s">
+    <img class="flourish" src="assets/flourish-left.png" alt="">
+    <p class="script-title">Wedding Invitation</p>
+    <h1>მარიამ &amp; ნოდო</h1>
+    <p class="sub">სიყვარულით გიწვევთ ჩვენი ბედნიერი დღის აღსანიშნად</p>
+    <img class="divider" src="assets/divider.png" alt="">
+    <p class="date">19 სექტემბერი 2026</p>
+    <p class="venue">📍 LISI EVENT HALL</p>
+  </section>
+
+  <!-- ================= COUNTDOWN ================= -->
+  <section class="countdown-wrap reveal">
+    <img class="divider" src="assets/divider-up.png" alt="">
+    <div id="countdown">
+      <div class="cd-box"><div class="cd-num" id="cd-d">0</div><div class="cd-label">დღე</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-h">0</div><div class="cd-label">საათი</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-m">0</div><div class="cd-label">წუთი</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-s">0</div><div class="cd-label">წამი</div></div>
+    </div>
+  </section>
+
+  <!-- ================= PROGRAM ================= -->
+  <section class="reveal">
+    <div class="program-paper">
+      <p class="script-title">Wedding Day</p>
+      <img class="divider" src="assets/divider.png" alt="">
+      <div class="event">
+        <span class="ev-emoji">⛪️</span>
+        <span class="ev-name">ჯვრისწერა</span>
+        <span class="ev-note">დროს მერე შეგატყობინებთ</span>
+      </div>
+      <div class="event">
+        <span class="ev-emoji">📷</span>
+        <span class="ev-name">ფოტოსესია</span>
+      </div>
+      <div class="event">
+        <span class="ev-emoji">🥂</span>
+        <span class="ev-time">17:00</span>
+        <span class="ev-name">სტუმრების მიღება</span>
+      </div>
+      <div class="event">
+        <span class="ev-emoji">🍽️</span>
+        <span class="ev-time">18:00</span>
+        <span class="ev-name">ვახშმის დაწყება</span>
+      </div>
+      <div class="event">
+        <span class="ev-emoji">🍰</span>
+        <span class="ev-time">21:30</span>
+        <span class="ev-name">ტორტის გაჭრა</span>
+      </div>
+      <div class="event">
+        <span class="ev-emoji">🎶</span>
+        <span class="ev-time">23:00</span>
+        <span class="ev-name">DJ</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DRESSCODE ================= -->
+  <section class="reveal">
+    <p class="script-title">Dresscode</p>
+    <img class="divider" src="assets/divider.png" alt="">
+    <p class="dress-word">ელეგანტური</p>
+    <p class="dress-note">პატივისცემით გთხოვთ, ქალბატონებმა თავი შეიკავონ თეთრი ფერის კაბებისგან, რათა პატარძალი იყოს ერთადერთი თეთრში ამ განსაკუთრებულ დღეს.</p>
+  </section>
+
+  <!-- ================= LOCATION ================= -->
+  <section class="reveal">
+    <img class="petal" src="assets/petal.png" alt="" style="left:4%;top:16%;animation-delay:.6s">
+    <img class="petal" src="assets/petal2.png" alt="" style="right:5%;top:10%">
+    <p class="script-title">Location</p>
+    <img class="divider" src="assets/divider.png" alt="">
+    <p class="loc-name">LISI EVENT HALL</p>
+    <img class="venue-art" src="assets/venue-sketch.png" alt="Lisi Event Hall">
+    <div class="map-card">
+      <!-- MAP: შეცვალეთ src ზუსტი კოორდინატებით, როცა მოგვცემენ.
+           ფორმატი: https://www.google.com/maps?q=LAT,LNG&z=16&output=embed -->
+      <iframe id="map-frame" src="https://www.google.com/maps?q=Lisi+Event+Hall,+Tbilisi&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lisi Event Hall Map"></iframe>
+    </div>
+    <a id="map-open" class="map-link" href="https://www.google.com/maps/search/?api=1&query=Lisi+Event+Hall+Tbilisi" target="_blank" rel="noopener">გახსენით რუკაზე 📍</a>
+  </section>
+
+  <!-- ================= RSVP ================= -->
+  <section class="reveal">
+    <button class="rsvp-stamp" id="rsvp-open" aria-haspopup="dialog" aria-controls="rsvp-modal">
+      <img src="assets/rsvp-seal.png" alt="RSVP">
+    </button>
+    <p class="rsvp-sub">დააჭირეთ ბეჭედს და დაადასტურეთ დასწრება</p>
+  </section>
+
+  <!-- ================= RSVP MODAL ================= -->
+  <div id="rsvp-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" id="rsvp-backdrop"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="RSVP">
+      <button class="modal-close" id="rsvp-close" aria-label="დახურვა">×</button>
+      <p class="modal-title">RSVP</p>
+      <p class="modal-sub">გთხოვთ, შეავსოთ ფორმა და დაადასტუროთ დასწრება</p>
+      <form id="rsvp-form">
+      <div class="field">
+        <label for="f-name">სახელი და გვარი</label>
+        <input type="text" id="f-name" name="name" required placeholder="თქვენი სახელი და გვარი">
+      </div>
+      <div class="field">
+        <label>ესწრებით ქორწილს?</label>
+        <div class="attend-opts">
+          <input type="radio" id="att-yes" name="attending" value="მოვალ" required>
+          <label for="att-yes">✓ მოვალ</label>
+          <input type="radio" id="att-no" name="attending" value="ვერ მოვალ">
+          <label for="att-no">✗ ვერ მოვალ</label>
+        </div>
+      </div>
+      <div class="field" id="guests-field">
+        <label for="f-guests">რამდენი სტუმარი მოდიხართ?</label>
+        <select id="f-guests" name="guests">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8+</option>
+        </select>
+      </div>
+      <div class="field" id="music-field">
+        <label for="f-music">რა მუსიკა აგაცეკვებთ? 🎶</label>
+        <input type="text" id="f-music" name="music" placeholder="სიმღერა / შემსრულებელი">
+      </div>
+      <button type="submit" class="btn-submit">გაგზავნა 🤍</button>
+      </form>
+      <div id="rsvp-done">
+        <p class="big">გმადლობთ! 🤍</p>
+        <p>თქვენი პასუხი მიღებულია</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= THANKS ================= -->
+  <section class="thanks reveal">
+    <div class="photo-frame">
+      <img class="photo" src="assets/couple.png" alt="მარიამ და ნოდო">
+      <img class="peony p1" src="assets/peony.png" alt="">
+      <img class="peony p2" src="assets/peony.png" alt="">
+      <img class="peony p3" src="assets/petal.png" alt="">
+    </div>
+    <p class="thanks-big">გმადლობთ!</p>
+    <p class="thanks-sub">მოუთმენლად ველით თქვენთან შეხვედრას</p>
+    <img class="divider" src="assets/divider-down.png" alt="">
+    <p class="thanks-names">მარიამ &amp; ნოდო</p>
+  </section>
+
+</main>
+
+<button id="music-btn" aria-label="მუსიკა">
+  <svg id="ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  <svg id="ic-pause" viewBox="0 0 24 24" style="display:none"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+</button>
+<audio id="bg-music" loop preload="auto"></audio>
+
+<script>
+/* ================= CONFIG =================
+   MUSIC_URL      — ფონური მუსიკა (Ludovico Einaudi — Divenire).
+   RSVP_ENDPOINT  — Web App URL, რომელიც პასუხებს Excel-ში ჩაწერს.
+     სამიზნე Excel ფაილი (OneDrive):
+     https://excel.cloud.microsoft/open/onedrive/?docId=66E6CD31F1BA69D%21sc1a66e48d5b2481fab28999f09651b6a&driveId=066e6cd31f1ba69d
+   ქორწილის თარიღი — 2026-09-19, 17:00 (თბილისის დროით).            */
+const MUSIC_URL     = "assets/music.mp3";
+const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbwU684bXpC0EopTSO8AnWJlmvv63tOhhEuKrDXEnTT6vAE9QJF31C_obwwemyYAaXiU/exec";
+const WEDDING_DATE  = new Date("2026-09-19T17:00:00+04:00");
+
+/* ---------- envelope + opening video ---------- */
+const envScreen = document.getElementById("envelope-screen");
+const videoWrap = document.getElementById("video-wrap");
+const video     = document.getElementById("env-video");
+const videoSeal = document.getElementById("video-seal");
+const mainEl    = document.getElementById("invitation");
+const audio     = document.getElementById("bg-music");
+const musicBtn  = document.getElementById("music-btn");
+const icPlay    = document.getElementById("ic-play");
+const icPause   = document.getElementById("ic-pause");
+let opened = false, revealed = false;
+
+/* Seal position over video time, measured frame-by-frame:
+   [time s, center-x %, center-y %, width % of stage] */
+const SEAL_PATH = [
+  /* measured frame-by-frame every 0.2s (dark + lit wax); width includes glow-halo margin */
+  [0.0, 49.6, 50.1, 31.5],
+  [0.2, 49.9, 50.3, 35.7],
+  [0.4, 49.9, 50.4, 35.7],
+  [0.6, 49.8, 50.8, 36.1],
+  [0.8, 49.8, 51.1, 36.7],
+  [1.0, 49.9, 51.4, 37.0],
+  [1.2, 49.7, 51.2, 36.1],
+  [1.4, 49.7, 51.1, 36.1],
+  [1.6, 49.7, 50.9, 36.6],
+  [1.8, 49.9, 50.5, 37.6],
+  [2.0, 50.0, 50.2, 38.5],
+  [2.2, 50.1, 49.0, 39.4],
+  [2.4, 50.1, 47.7, 40.7],
+  [2.6, 50.1, 46.3, 41.3],
+  [2.8, 50.1, 45.0, 42.0],
+  [3.0, 50.1, 43.4, 42.5],
+  [3.2, 50.2, 41.9, 42.9],
+  [3.4, 50.0, 40.2, 42.9],
+  [3.6, 50.1, 38.0, 43.2],
+  [3.8, 50.1, 35.5, 43.2],
+  [4.0, 50.0, 32.8, 42.9],
+  [4.2, 50.1, 30.2, 42.5],
+  [4.4, 50.1, 27.4, 42.5],
+  [4.6, 50.2, 24.7, 42.9],
+  [4.8, 50.0, 22.4, 42.9]
+];
+function trackSeal(){
+  if(!videoSeal.isConnected) return;
+  const t = video.currentTime;
+  let p = SEAL_PATH[0], n = SEAL_PATH[SEAL_PATH.length-1];
+  for(let i = 0; i < SEAL_PATH.length - 1; i++){
+    if(t >= SEAL_PATH[i][0] && t <= SEAL_PATH[i+1][0]){ p = SEAL_PATH[i]; n = SEAL_PATH[i+1]; break; }
+  }
+  const f = Math.min(Math.max((t - p[0]) / ((n[0] - p[0]) || 1), 0), 1);
+  videoSeal.style.left  = (p[1] + (n[1] - p[1]) * f) + "%";
+  videoSeal.style.top   = (p[2] + (n[2] - p[2]) * f) + "%";
+  videoSeal.style.width = (p[3] + (n[3] - p[3]) * f) + "%";
+  requestAnimationFrame(trackSeal);
+}
+
+function revealPage(){
+  if(revealed) return;
+  revealed = true;
+  videoWrap.classList.remove("video-in");
+  videoWrap.classList.add("video-out");
+  document.body.classList.remove("locked");
+  mainEl.classList.add("shown");
+  setTimeout(()=> videoWrap.remove(), 1500);
+}
+
+function openInvitation(){
+  if(opened) return;
+  opened = true;
+  envScreen.style.opacity = "0";
+  envScreen.style.pointerEvents = "none";
+  setTimeout(()=> envScreen.remove(), 1500);
+  startMusic();
+
+  if(video.readyState === 0 || video.error){
+    revealPage();
+    return;
+  }
+  videoWrap.classList.add("video-in");
+  videoSeal.classList.add("glow");
+  const vp = video.play();
+  if(vp && vp.catch) vp.catch(()=> revealPage());
+  requestAnimationFrame(trackSeal);
+  /* fade to the invitation 0.8s before the video ends */
+  video.addEventListener("timeupdate", ()=>{
+    if(video.duration && video.currentTime >= video.duration - 0.8) revealPage();
+  });
+  video.addEventListener("ended", revealPage);
+  video.addEventListener("error", revealPage);
+  /* safety: reveal even if playback stalls */
+  setTimeout(revealPage, 7000);
+}
+envScreen.addEventListener("click", openInvitation);
+envScreen.addEventListener("touchstart", openInvitation, {passive:true});
+envScreen.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" ") openInvitation(); });
+video.load();
+
+/* ---------- music ---------- */
+function startMusic(){
+  if(!MUSIC_URL) return;
+  audio.src = MUSIC_URL;
+  musicBtn.classList.add("on");
+  audio.play().then(()=> setPlayingUI(true)).catch(()=> setPlayingUI(false));
+}
+function setPlayingUI(playing){
+  icPlay.style.display  = playing ? "none" : "block";
+  icPause.style.display = playing ? "block" : "none";
+  musicBtn.classList.toggle("playing", playing);
+}
+musicBtn.addEventListener("click", ()=>{
+  if(audio.paused){ audio.play().then(()=>setPlayingUI(true)).catch(()=>{}); }
+  else{ audio.pause(); setPlayingUI(false); }
+});
+audio.addEventListener("error", ()=>{ musicBtn.classList.remove("on"); });
+
+/* ---------- countdown ---------- */
+function pad(n){ return String(n).padStart(2,"0"); }
+function tick(){
+  let diff = Math.max(0, WEDDING_DATE - new Date());
+  const d = Math.floor(diff/864e5);
+  const h = Math.floor(diff%864e5/36e5);
+  const m = Math.floor(diff%36e5/6e4);
+  const s = Math.floor(diff%6e4/1e3);
+  document.getElementById("cd-d").textContent = d;
+  document.getElementById("cd-h").textContent = pad(h);
+  document.getElementById("cd-m").textContent = pad(m);
+  document.getElementById("cd-s").textContent = pad(s);
+}
+tick(); setInterval(tick, 1000);
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+/* ---------- RSVP modal ---------- */
+const modal = document.getElementById("rsvp-modal");
+function openModal(){
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+}
+function closeModal(){
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+}
+document.getElementById("rsvp-open").addEventListener("click", openModal);
+document.getElementById("rsvp-close").addEventListener("click", closeModal);
+document.getElementById("rsvp-backdrop").addEventListener("click", closeModal);
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+
+/* ---------- RSVP ---------- */
+const form      = document.getElementById("rsvp-form");
+const doneBox   = document.getElementById("rsvp-done");
+const guestsFld = document.getElementById("guests-field");
+const musicFld  = document.getElementById("music-field");
+document.querySelectorAll('input[name="attending"]').forEach(r=>{
+  r.addEventListener("change", ()=>{
+    const coming = document.getElementById("att-yes").checked;
+    guestsFld.style.display = coming ? "" : "none";
+    musicFld.style.display  = coming ? "" : "none";
+  });
+});
+form.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const btn = form.querySelector(".btn-submit");
+  btn.disabled = true;
+  const data = {
+    name:      document.getElementById("f-name").value.trim(),
+    attending: (document.querySelector('input[name="attending"]:checked')||{}).value || "",
+    guests:    document.getElementById("att-yes").checked ? document.getElementById("f-guests").value : "0",
+    music:     document.getElementById("att-yes").checked ? document.getElementById("f-music").value.trim() : "",
+    date:      new Date().toLocaleString("ka-GE")
+  };
+  try{
+    if(RSVP_ENDPOINT){
+      await fetch(RSVP_ENDPOINT, {
+        method:"POST",
+        mode:"no-cors",
+        headers:{"Content-Type":"application/x-www-form-urlencoded"},
+        body:new URLSearchParams(data).toString()
+      });
+    }else{
+      /* endpoint ჯერ არ არის მითითებული — პასუხი დროებით ინახება ბრაუზერში */
+      const saved = JSON.parse(localStorage.getItem("rsvp")||"[]");
+      saved.push(data);
+      localStorage.setItem("rsvp", JSON.stringify(saved));
+    }
+    form.style.display = "none";
+    doneBox.style.display = "block";
+    setTimeout(closeModal, 3000);
+  }catch(err){
+    btn.disabled = false;
+    alert("დაფიქსირდა შეცდომა, სცადეთ თავიდან");
+  }
+});
+</script>
+</body>
+</html>
