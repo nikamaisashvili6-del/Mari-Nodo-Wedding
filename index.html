@@ -203,7 +203,7 @@
     padding:.78rem 0;
     flex-wrap:wrap;
   }
-  .ev-emoji{font-size:1.45rem}
+  .ev-emoji{font-size:1.45rem;display:inline-block;width:1.7em;text-align:center;flex-shrink:0}
   .ev-time{
     font-family:var(--serif);
     font-size:1.25rem;color:var(--gold);
@@ -405,6 +405,11 @@
   @media (max-width:480px){
     .map-card iframe{height:300px}
     .peony.p3{display:none}
+    .program-paper{padding-left:1.5rem;padding-right:1.5rem}
+    .event{flex-wrap:nowrap;gap:.5rem}
+    .ev-emoji{font-size:1.2rem;width:1.4em}
+    .ev-time{font-size:1.05rem;min-width:2.8em}
+    .ev-name{font-size:.92rem;white-space:nowrap}
   }
 </style>
 </head>
@@ -462,14 +467,13 @@
       <div class="event">
         <span class="ev-emoji">⛪️</span>
         <span class="ev-name">ჯვრისწერა</span>
-        <span class="ev-note">დროს მერე შეგატყობინებთ</span>
       </div>
       <div class="event">
         <span class="ev-emoji">📷</span>
         <span class="ev-name">ფოტოსესია</span>
       </div>
       <div class="event">
-        <span class="ev-emoji">🥂</span>
+        <span class="ev-emoji" style="font-size:1.7rem">🥂</span>
         <span class="ev-time">17:00</span>
         <span class="ev-name">სტუმრების მიღება</span>
       </div>
