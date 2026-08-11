@@ -670,6 +670,8 @@ function revealPage(){
   videoWrap.classList.add("video-out");
   document.body.classList.remove("locked");
   mainEl.classList.add("shown");
+  void document.body.offsetHeight;
+  window.scrollTo(0, window.scrollY);
   setTimeout(()=> videoWrap.remove(), 1500);
 }
 
@@ -703,6 +705,17 @@ envScreen.addEventListener("click", openInvitation);
 envScreen.addEventListener("touchstart", openInvitation, {passive:true});
 envScreen.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" ") openInvitation(); });
 video.load();
+
+setTimeout(()=>{
+  if(document.body.classList.contains("locked")){
+    document.body.classList.remove("locked");
+    mainEl.classList.add("shown");
+    if(envScreen.isConnected) envScreen.remove();
+    if(videoWrap.isConnected) videoWrap.remove();
+    void document.body.offsetHeight;
+    window.scrollTo(0, window.scrollY);
+  }
+}, 12000);
 
 /* ---------- music ---------- */
 function startMusic(){
