@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ka">
+<!-- <html lang="ka"> -->
+<html lang="ka" class="locked"></html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,15 +26,61 @@
     --geo:'Noto Serif Georgian',Georgia,serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;overflow-x:hidden}
+  /* html{scroll-behavior:smooth;overflow-x:hidden}
   body{
     background:var(--cream);
     color:var(--brown);
     font-family:var(--geo);
     overflow-x:hidden;
   }
-  body.locked{overflow:hidden;height:100vh}
-  img{max-width:100%}
+  body.locked{overflow:hidden;height:100vh} */
+
+  html{
+  scroll-behavior:smooth;
+  overflow-x:hidden;
+  overflow-y:auto;
+
+  body{
+  margin:0;
+  background:var(--cream);
+  color:var(--brown);
+  font-family:var(--geo);
+  overflow-x:hidden;
+  overflow-y:visible;
+}
+
+body.locked{
+  overflow:hidden;
+  height:100vh;
+}
+}
+
+
+
+
+.modal-card{
+    max-height:88vh;
+    overflow-y:auto;
+}
+
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--brown);
+  font-family:var(--geo);
+  overflow-x:hidden;
+  overflow-y:visible;
+}
+
+body.locked{
+  overflow:hidden;
+  height:100vh;
+}
+  /* html.locked,body.locked{overflow:hidden;height:100%}
+  body.locked main{height:0;overflow:hidden} */
+  html.locked,body.locked{overflow:hidden}
+  /* img{max-width:100%} */
+  img{max-width:100%;height:auto}
 
   /* ---------- ENVELOPE INTRO (photo + video, as original) ---------- */
   #envelope-screen{
@@ -415,7 +462,8 @@
   }
 </style>
 </head>
-<body class="locked">
+<!-- <body class="locked"> -->
+<body class="locked" style="position:fixed;inset:0;overflow:hidden;width:100%"></body>
 
 <!-- ================= ENVELOPE ================= -->
 <div id="envelope-screen" role="button" aria-label="მოსაწვევის გახსნა" tabindex="0">
@@ -439,20 +487,26 @@
 
   <!-- ================= HERO ================= -->
   <section class="hero">
-    <img class="petal" src="assets/petal.png" alt="" style="left:6%;top:22%">
-    <img class="petal" src="assets/petal2.png" alt="" style="right:7%;top:52%;animation-delay:1.2s">
-    <img class="flourish" src="assets/flourish-left.png" alt="">
+    <!-- <img class="petal" src="assets/petal.png" alt="" style="left:6%;top:22%"> -->
+    <img class="petal" src="assets/petal.png" width="120" height="112" alt="" style="left:6%;top:22%">
+    <!-- <img class="petal" src="assets/petal2.png" alt="" style="right:7%;top:52%;animation-delay:1.2s">
+      -->
+    <img class="petal" src="assets/petal2.png" width="125" height="102" alt="" style="right:7%;top:52%;animation-delay:1.2s">
+    <!-- <img class="flourish" src="assets/flourish-left.png" alt=""> -->
+    <img class="flourish" src="assets/flourish-left.png" width="316" height="164" alt="">
     <p class="script-title">Wedding Invitation</p>
     <h1>მარიამ &amp; ნოდო</h1>
     <p class="sub">სიყვარულით გიწვევთ ჩვენი ბედნიერი დღის აღსანიშნად</p>
-    <img class="divider" src="assets/divider.png" alt="">
+    <!-- <img class="divider" src="assets/divider.png" alt=""> -->
+    <img class="divider" src="assets/divider.png" width="384" height="120" alt="">
     <p class="date">19 სექტემბერი 2026</p>
     <p class="venue">📍 LISI EVENT HALL</p>
   </section>
 
   <!-- ================= COUNTDOWN ================= -->
   <section class="countdown-wrap reveal">
-    <img class="divider" src="assets/divider-up.png" alt="">
+    <!-- <img class="divider" src="assets/divider-up.png" alt=""> -->
+    <img class="divider" src="assets/divider-up.png" width="605" height="135" alt=""> 
     <div id="countdown">
       <div class="cd-box"><div class="cd-num" id="cd-d">0</div><div class="cd-label">დღე</div></div>
       <div class="cd-box"><div class="cd-num" id="cd-h">0</div><div class="cd-label">საათი</div></div>
@@ -507,12 +561,15 @@
 
   <!-- ================= LOCATION ================= -->
   <section class="reveal">
-    <img class="petal" src="assets/petal.png" alt="" style="left:4%;top:16%;animation-delay:.6s">
-    <img class="petal" src="assets/petal2.png" alt="" style="right:5%;top:10%">
+    <!-- <img class="petal" src="assets/petal.png" alt="" style="left:4%;top:16%;animation-delay:.6s"> -->
+    <img class="petal" src="assets/petal.png" width="120" height="112" alt="" style="left:4%;top:16%;animation-delay:.6s">
+    <!-- <img class="petal" src="assets/petal2.png" alt="" style="right:5%;top:10%"> -->
+    <img class="petal" src="assets/petal2.png" width="125" height="102" alt="" style="right:5%;top:10%"> 
     <p class="script-title">Location</p>
     <img class="divider" src="assets/divider.png" alt="">
     <p class="loc-name">LISI EVENT HALL</p>
-    <img class="venue-art" src="assets/venue-sketch.png" alt="Lisi Event Hall">
+    <!-- <img class="venue-art" src="assets/venue-sketch.png" alt="Lisi Event Hall"> -->
+    <img class="venue-art" src="assets/venue-sketch.png" width="960" height="720" alt="Lisi Event Hall"> 
     <div class="map-card">
       <!-- MAP: შეცვალეთ src ზუსტი კოორდინატებით, როცა მოგვცემენ.
            ფორმატი: https://www.google.com/maps?q=LAT,LNG&z=16&output=embed -->
@@ -524,7 +581,8 @@
   <!-- ================= RSVP ================= -->
   <section class="reveal">
     <button class="rsvp-stamp" id="rsvp-open" aria-haspopup="dialog" aria-controls="rsvp-modal">
-      <img src="assets/rsvp-seal.png" alt="RSVP">
+      <!-- <img src="assets/rsvp-seal.png" alt="RSVP"> -->
+      <img src="assets/rsvp-seal.png" width="1195" height="896" alt="RSVP">
     </button>
     <p class="rsvp-sub">დააჭირეთ ბეჭედს და დაადასტურეთ დასწრება</p>
   </section>
@@ -579,14 +637,19 @@
   <!-- ================= THANKS ================= -->
   <section class="thanks reveal">
     <div class="photo-frame">
-      <img class="photo" src="assets/couple.png" alt="მარიამ და ნოდო">
-      <img class="peony p1" src="assets/peony.png" alt="">
+      <!-- <img class="photo" src="assets/couple.png" alt="მარიამ და ნოდო"> -->
+      <img class="photo" src="assets/couple.png" width="657" height="960" alt="მარიამ და ნოდო"> 
+      <!-- <img class="peony p1" src="assets/peony.png" alt="">
       <img class="peony p2" src="assets/peony.png" alt="">
-      <img class="peony p3" src="assets/petal.png" alt="">
+      <img class="peony p3" src="assets/petal.png" alt=""> -->
+      <img class="peony p1" src="assets/peony.png" width="1309" height="1201" alt="">
+      <img class="peony p2" src="assets/peony.png" width="1309" height="1201" alt="">
+      <img class="peony p3" src="assets/petal.png" width="120" height="112" alt="">
     </div>
     <p class="thanks-big">გმადლობთ!</p>
     <p class="thanks-sub">მოუთმენლად ველით თქვენთან შეხვედრას</p>
-    <img class="divider" src="assets/divider-down.png" alt="">
+    <!-- <img class="divider" src="assets/divider-down.png" alt=""> -->
+    <img class="divider" src="assets/divider-down.png" width="605" height="135" alt=""> 
     <p class="thanks-names">მარიამ &amp; ნოდო</p>
   </section>
 
@@ -665,15 +728,47 @@ function trackSeal(){
   requestAnimationFrame(trackSeal);
 }
 
+// function revealPage(){
+//   if(revealed) return;
+//   revealed = true;
+//   videoWrap.classList.remove("video-in");
+//   videoWrap.classList.add("video-out");
+//   document.documentElement.classList.remove("locked");
+//   // document.body.classList.remove("locked");
+//   document.body.classList.remove("locked");
+//   document.body.style.position = "";
+//   document.body.style.inset = "";
+//   document.body.style.overflow = "";
+//   document.body.style.width = "";
+//   mainEl.classList.add("shown");
+//   void document.body.offsetHeight;
+//   window.scrollTo(0, window.scrollY);
+//   setTimeout(()=> videoWrap.remove(), 1500);
+//   document.documentElement.style.overflowY = "auto";
+// document.body.style.overflowY = "visible";
+
+// mainEl.classList.add("shown");
+
+// void document.body.offsetHeight;
+// window.scrollTo(0, window.scrollY);
+// }
 function revealPage(){
   if(revealed) return;
   revealed = true;
+
   videoWrap.classList.remove("video-in");
   videoWrap.classList.add("video-out");
+
   document.body.classList.remove("locked");
+
+  document.documentElement.style.overflowY = "auto";
+  document.body.style.overflowY = "visible";
+
   mainEl.classList.add("shown");
+
   void document.body.offsetHeight;
   window.scrollTo(0, window.scrollY);
+
   setTimeout(()=> videoWrap.remove(), 1500);
 }
 
@@ -710,7 +805,13 @@ video.load();
 
 setTimeout(()=>{
   if(document.body.classList.contains("locked")){
+    document.documentElement.classList.remove("locked");
     document.body.classList.remove("locked");
+    document.body.classList.remove("locked");
+    document.body.style.position = "";
+    document.body.style.inset = "";
+    document.body.style.overflow = "";
+    document.body.style.width = "";
     mainEl.classList.add("shown");
     if(envScreen.isConnected) envScreen.remove();
     if(videoWrap.isConnected) videoWrap.remove();
